@@ -2,8 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
-#include "mapmodel.h"
+#include "qformatter.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,9 +21,15 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_pushButton_3_clicked();
+
 private:
     Ui::MainWindow *ui;
-    MapModel mapmodel;
+
+    QString pathFileRef;
+    QString pathFileOther;
+
+    void generate();
 };
 
 #endif // MAINWINDOW_H

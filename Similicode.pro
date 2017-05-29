@@ -3,6 +3,7 @@
 # Project created by QtCreator 2017-05-29T01:26:19
 #
 #-------------------------------------------------
+INCLUDEPATH += /usr/include/c++/4.3
 
 QT       += core gui
 
@@ -26,13 +27,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    formatter.cpp \
-    mapmodel.cpp
+    qformatter.cpp
 
 HEADERS += \
         mainwindow.h \
-    formatter.h \
-    mapmodel.h
+    qformatter.h
 
 FORMS += \
         mainwindow.ui
