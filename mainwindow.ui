@@ -10,6 +10,18 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>1200</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>SimiliCode</string>
   </property>
@@ -122,6 +134,24 @@
       <width>390</width>
       <height>420</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>390</width>
+      <height>420</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>390</width>
+      <height>1020</height>
+     </size>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>false</bool>
+    </property>
+    <property name="verticalScrollMode">
+     <enum>QAbstractItemView::ScrollPerPixel</enum>
     </property>
    </widget>
    <widget class="QLabel" name="nameRef">
