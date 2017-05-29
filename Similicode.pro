@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    formatter.cpp
+    formatter.cpp \
+    mapmodel.cpp
 
 HEADERS += \
         mainwindow.h \
-    formatter.h
+    formatter.h \
+    mapmodel.h
 
 FORMS += \
         mainwindow.ui
