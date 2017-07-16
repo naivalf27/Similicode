@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Select file reference</string>
+     <string>Select file</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -49,7 +49,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Select other file</string>
+     <string>Select file</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -78,7 +78,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Fichier à étudier</string>
+     <string>Fichier à analyser</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -228,7 +228,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Inclure les string</string>
+     <string>Inclure les &quot;string&quot;</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="includeIsInclude">
@@ -241,7 +241,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Incluse les include</string>
+     <string>Inclure les &quot;include&quot;</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="alphaNumeriqueSeparator">
@@ -254,7 +254,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Nutiliser que les caractère alpha-numérique</string>
+     <string>N'utiliser que les caractères alpha-numérique</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -273,7 +273,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Autres calculs</string>
+     <string>Voir plus</string>
     </property>
    </widget>
    <widget class="Line" name="line_2">
@@ -354,7 +354,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Séléctionner les mots puis :</string>
+     <string>Sélectionner les mots puis :</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -383,7 +383,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Liste des charactères</string>
+     <string>Liste des caractères</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
