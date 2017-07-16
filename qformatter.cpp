@@ -1,39 +1,61 @@
 #include "qformatter.h"
 
-QFormatter::QFormatter(QString filePath)
+QFormatter::QFormatter()
 {
-    if (exec(filePath)){
-        genereMap();
+}
+
+QString QFormatter::executeInFile(const QString &filePath)
+{
+    QString data("");
+    filterFile(data, filePath);
+    return data;
+}
+
+QMap<QString, int> QFormatter::getMap(const QString &data)
+{
+    QMap<QString, int> map;
+    genereMap(map, data, ' ');
+    return map;
+}
+
+void QFormatter::genereMap(QMap<QString, int> &map, const QString &data, QChar separator)
+{
+    if(useAlphaNumeriqueSeparator) {
+        useAlphaNumerique(map,data,separator);
+    } else {
+        QStringList listWord = data.split(separator, QString::SkipEmptyParts);
+        for(int i(0); i < listWord.size(); i++){
+            map[listWord.at(i)] += 1;
+        }
     }
 }
 
-void QFormatter::genereMap()
+void QFormatter::useAlphaNumerique(QMap<QString, int> &map, const QString &data, QChar separator)
 {
     QString currentWord("");
-    for(int i(0); i< m_data.size(); i++){
-        QChar c = m_data.at(i);
+    for(int i(0); i< data.size(); i++){
+        QChar c = data.at(i);
 
         if (c.isLetterOrNumber()){
             currentWord += c;
         } else {
-            m_map[currentWord] += 1;
+            map[currentWord] += 1;
             currentWord = "";
 
-            if (!c.isSpace()){
+            if (c != separator){
                 currentWord += c;
-                m_map[currentWord] += 1;
+                map[currentWord] += 1;
                 currentWord = "";
             }
         }
     }
 }
 
-bool QFormatter::exec(QString filePath)
+bool QFormatter::filterFile(QString &fileLignes,const QString &filePath)
 {
     QFile fichier(filePath);
     if(fichier.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        m_data = "";
         QTextStream flux(&fichier);
         QString ligne;
         while(!flux.atEnd()){
@@ -43,8 +65,12 @@ bool QFormatter::exec(QString filePath)
                 continue;
             }
 
-            filtreGuillemet(ligne);
-            m_data += ligne;
+            if (!includeString) {
+                if (!isComment(ligne)){
+                    filtreGuillemet(ligne);
+                }
+            }
+            fileLignes += ligne;
         }
         fichier.close();
         return true;
@@ -54,9 +80,24 @@ bool QFormatter::exec(QString filePath)
 }
 
 void QFormatter::filtreGuillemet(QString &ligne){
+
     while (ligne.contains("\"")) {
-        ligne.replace(QString("\\\""),QString(""));
         QStringList list1 = ligne.split("\"");
+
+        QString final("");
+
+        for (int i(0); i< list1.size() ; i++)
+        {
+            if (i%2 == 0) {
+                final += list1.at(i);
+            }
+        }
+
+        ligne = final;
+    }
+
+    while (ligne.contains("'")) {
+        QStringList list1 = ligne.split("'");
 
         QString final("");
 
@@ -74,10 +115,16 @@ void QFormatter::filtreGuillemet(QString &ligne){
 void QFormatter::formatLigne(QString &ligne)
 {
     if (!isEmpty(ligne)) {
-        removeComment(ligne);
+        if (removeCmt) {
+            removeComment(ligne);
+        }
         cleanLigne(ligne);
 
-        if (isInclude(ligne) || isUsingNamespace(ligne)){
+        if (isUsingNamespace(ligne)){
+            ligne = "";
+        }
+
+        if (!includeInclude && isInclude(ligne)){
             ligne = "";
         }
     } else {
@@ -87,9 +134,9 @@ void QFormatter::formatLigne(QString &ligne)
 
 void QFormatter::cleanLigne(QString &ligne)
 {
-    while (ligne.contains(QString("	")) || ligne.contains(QString("  "))) {
-        ligne = ligne.replace(QString("	"), QString(" "));
-        ligne = ligne.replace(QString("  "), QString(" "));
+    while (ligne.contains("	") || ligne.contains("  ")) {// tab or space
+        ligne = ligne.replace("	", " ");//\t
+        ligne = ligne.replace("  ", " ");
     }
 }
 
@@ -99,10 +146,10 @@ bool QFormatter::isEmpty(QString ligne)
         return true;
     }
 
-    ligne = ligne.replace(QString("	"), QString(" "));
-    ligne = ligne.replace(QString("  "), QString(" "));
+    ligne = ligne.replace("	", " ");//\t
+    ligne = ligne.replace("  ", " ");
 
-    if ((ligne.size() == 1 && ligne.contains(QString(" "))) || ligne.isEmpty()){
+    if ((ligne.size() == 1 && ligne.contains(" ")) || ligne.isEmpty()){
         return true;
     }
 
@@ -110,13 +157,35 @@ bool QFormatter::isEmpty(QString ligne)
 }
 
 bool QFormatter::isInclude(const QString &ligne){
-    return ligne.contains(QString("#include "));
+    return ligne.startsWith("#include ");
 }
 
 bool QFormatter::isUsingNamespace(const QString &ligne){
-    return ligne.contains(QString("using namespace"));
+    return ligne.startsWith("using namespace");
+}
+
+bool QFormatter::isComment(const QString &ligne){
+    if(ligne.startsWith("\/*")){
+        commentOpen = true;
+    }
+
+    if (ligne.endsWith("*\/")) {
+        commentOpen = false;
+        return true;
+    }
+    return commentOpen;
 }
 
 void QFormatter::removeComment(QString &ligne){
+    if(ligne.startsWith("\/*")){
+        commentOpen = true;
+    }
+
+    if (commentOpen) {
+        if (ligne.endsWith("*\/")) {
+            commentOpen = false;
+        }
+        ligne = "";
+    }
     ligne = ligne.split("\\\\").first();
 }

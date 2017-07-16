@@ -9,23 +9,29 @@
 class QFormatter
 {
 public:
-    QFormatter(QString filePath);
+    bool removeCmt = true;
+    bool includeString = false;
+    bool includeInclude = false;
+    bool useAlphaNumeriqueSeparator = true;
 
-    QMap<QString, int> getMap() { return m_map; }
+    QFormatter();
+
+    QString executeInFile(QString const& filePath);
+    QMap<QString, int> getMap(QString const& data);
 
 private:
-    QString m_data;
-    QMap<QString, int> m_map;
+    bool commentOpen = false;
+    void genereMap(QMap<QString, int>& map,QString const& data, QChar separator);
+    void useAlphaNumerique(QMap<QString, int>& map, QString const&data, QChar separator);
 
-    bool exec(QString filePath);
-
-    void genereMap();
+    bool filterFile(QString& fileLignes,QString const& filePath);
 
     void formatLigne(QString& ligne);
     bool isEmpty(QString ligne);
     void cleanLigne(QString& ligne);
 
     bool isInclude(QString const& ligne);
+    bool isComment(QString const& ligne);
     bool isUsingNamespace(QString const& ligne);
     void removeComment(QString& ligne);
     void filtreGuillemet(QString& ligne);
